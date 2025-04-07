@@ -45,109 +45,111 @@ st.write("Rate each statement from 1 (Strongly Disagree) to 7 (Strongly Agree)")
 for q_id, (question_text, _) in questions.items():
     responses[q_id] = st.slider(question_text, 1, 7, 4)
 
-# Compute results if user has submitted answers
-if st.button("Submit & Get Results") and user_id.strip():
-    scores = {"Past": 0, "Present": 0, "Future": 0}
-    counts = {"Past": 0, "Present": 0, "Future": 0}
+# Handle submission
+submit_clicked = st.button("Submit & Get Results")
 
-    for q_id, score in responses.items():
-        category = questions[q_id][1]
-        scores[category] += score
-        counts[category] += 1
-
-    normalized_scores = {k: (scores[k] / (counts[k] * 7)) * 100 for k in scores}
-
-    # Display results
-    st.subheader("Your Temporal Profile")
-    df_scores = pd.DataFrame.from_dict(normalized_scores, orient='index', columns=['Score (%)'])
-    st.bar_chart(df_scores)
-
-    # Radar chart visualization
-    st.subheader("Radar Chart")
-    categories = list(normalized_scores.keys())
-    values = list(normalized_scores.values())
-    values += values[:1]  # Repeat first value to close the radar chart
-    num_vars = len(categories)
-
-    angles = [n / float(num_vars) * 2 * pi for n in range(num_vars)]
-    angles += angles[:1]
-
-    fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
-    ax.plot(angles, values, linewidth=2, linestyle='solid')
-    ax.fill(angles, values, alpha=0.3)
-    ax.set_xticks(angles[:-1])
-    ax.set_xticklabels(categories)
-    ax.set_yticklabels(["0", "20", "40", "60", "80", "100"])
-    st.pyplot(fig)
-
-    # Archetype assignment logic
-    dominant_focus = max(normalized_scores, key=normalized_scores.get)
-    archetypes = {
-        "Past": "The Nostalgic",
-        "Present": "The Flow-Seeker",
-        "Future": "The Visionary"
-    }
-
-    st.markdown(f"### Dominant Temporal Focus: **{dominant_focus}**")
-    st.markdown(f"### Your Archetype: **{archetypes[dominant_focus]}**")
-
-    # Add extended insights and tips
-    insights = {
-        "Past": (
-            "You tend to reflect on past experiences. Try channeling those memories into wisdom without getting stuck in regret.",
-            [
-                "Keep a gratitude journal to reframe past events positively.",
-                "Write a letter to your past self, then reflect on how you've grown.",
-                "Practice letting go rituals, like writing and burning old regrets."
-            ]
-        ),
-        "Present": (
-            "You thrive in the moment. Consider how staying grounded helps you enjoy life and stay resilient.",
-            [
-                "Practice mindful breathing for 2 minutes a day.",
-                "Schedule daily 'flow time'—uninterrupted periods to enjoy what you love.",
-                "Notice and name what you're sensing throughout the day."
-            ]
-        ),
-        "Future": (
-            "You’re future-focused. Harness your vision, but don’t forget to enjoy the present journey.",
-            [
-                "Create a vision board and revisit it weekly.",
-                "Break down big goals into small, daily action steps.",
-                "Balance planning with spontaneous activities to stay present."
-            ]
-        )
-    }
-
-    summary, tips = insights[dominant_focus]
-    st.write(summary)
-    st.markdown("#### Try These Tips:")
-    for tip in tips:
-        st.markdown(f"- {tip}")
-
-    # Save results to CSV
-    result_entry = {
-        "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "User ID": user_id,
-        "Past Score": round(normalized_scores["Past"], 2),
-        "Present Score": round(normalized_scores["Present"], 2),
-        "Future Score": round(normalized_scores["Future"], 2),
-        "Archetype": archetypes[dominant_focus]
-    }
-    result_df = pd.DataFrame([result_entry])
-    results_file = "results.csv"
-
-    if os.path.exists(results_file):
-        existing_df = pd.read_csv(results_file)
-        updated_df = pd.concat([existing_df, result_df], ignore_index=True)
+if submit_clicked:
+    if not user_id.strip():
+        st.warning("Please enter your name or ID before submitting.")
     else:
-        updated_df = result_df
+        scores = {"Past": 0, "Present": 0, "Future": 0}
+        counts = {"Past": 0, "Present": 0, "Future": 0}
 
-    updated_df.to_csv(results_file, index=False)
-    st.success("Your results have been saved!")
+        for q_id, score in responses.items():
+            category = questions[q_id][1]
+            scores[category] += score
+            counts[category] += 1
 
-    # Optional: download or save
-    st.download_button("Download My Results", df_scores.to_csv().encode(), file_name="temporal_focus_results.csv")
+        normalized_scores = {k: (scores[k] / (counts[k] * 7)) * 100 for k in scores}
 
-elif st.button("Submit & Get Results"):
-    st.warning("Please enter your name or ID before submitting.")
+        # Display results
+        st.subheader("Your Temporal Profile")
+        df_scores = pd.DataFrame.from_dict(normalized_scores, orient='index', columns=['Score (%)'])
+        st.bar_chart(df_scores)
+
+        # Radar chart visualization
+        st.subheader("Radar Chart")
+        categories = list(normalized_scores.keys())
+        values = list(normalized_scores.values())
+        values += values[:1]  # Repeat first value to close the radar chart
+        num_vars = len(categories)
+
+        angles = [n / float(num_vars) * 2 * pi for n in range(num_vars)]
+        angles += angles[:1]
+
+        fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
+        ax.plot(angles, values, linewidth=2, linestyle='solid')
+        ax.fill(angles, values, alpha=0.3)
+        ax.set_xticks(angles[:-1])
+        ax.set_xticklabels(categories)
+        ax.set_yticklabels(["0", "20", "40", "60", "80", "100"])
+        st.pyplot(fig)
+
+        # Archetype assignment logic
+        dominant_focus = max(normalized_scores, key=normalized_scores.get)
+        archetypes = {
+            "Past": "The Nostalgic",
+            "Present": "The Flow-Seeker",
+            "Future": "The Visionary"
+        }
+
+        st.markdown(f"### Dominant Temporal Focus: **{dominant_focus}**")
+        st.markdown(f"### Your Archetype: **{archetypes[dominant_focus]}**")
+
+        # Add extended insights and tips
+        insights = {
+            "Past": (
+                "You tend to reflect on past experiences. Try channeling those memories into wisdom without getting stuck in regret.",
+                [
+                    "Keep a gratitude journal to reframe past events positively.",
+                    "Write a letter to your past self, then reflect on how you've grown.",
+                    "Practice letting go rituals, like writing and burning old regrets."
+                ]
+            ),
+            "Present": (
+                "You thrive in the moment. Consider how staying grounded helps you enjoy life and stay resilient.",
+                [
+                    "Practice mindful breathing for 2 minutes a day.",
+                    "Schedule daily 'flow time'—uninterrupted periods to enjoy what you love.",
+                    "Notice and name what you're sensing throughout the day."
+                ]
+            ),
+            "Future": (
+                "You’re future-focused. Harness your vision, but don’t forget to enjoy the present journey.",
+                [
+                    "Create a vision board and revisit it weekly.",
+                    "Break down big goals into small, daily action steps.",
+                    "Balance planning with spontaneous activities to stay present."
+                ]
+            )
+        }
+
+        summary, tips = insights[dominant_focus]
+        st.write(summary)
+        st.markdown("#### Try These Tips:")
+        for tip in tips:
+            st.markdown(f"- {tip}")
+
+        # Save results to CSV
+        result_entry = {
+            "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "User ID": user_id,
+            "Past Score": round(normalized_scores["Past"], 2),
+            "Present Score": round(normalized_scores["Present"], 2),
+            "Future Score": round(normalized_scores["Future"], 2),
+            "Archetype": archetypes[dominant_focus]
+        }
+        result_df = pd.DataFrame([result_entry])
+        results_file = "results.csv"
+
+        if os.path.exists(results_file):
+            existing_df = pd.read_csv(results_file)
+            updated_df = pd.concat([existing_df, result_df], ignore_index=True)
+        else:
+            updated_df = result_df
+
+        updated_df.to_csv(results_file, index=False)
+        st.success("Your results have been saved!")
+
+        # Optional: download or save
+        st.download_button("Download My Results", df_scores.to_csv().encode(), file_name="temporal_focus_results.csv")
