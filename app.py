@@ -85,8 +85,7 @@ with st.sidebar.expander("📄 Download the Full White Paper"):
 col1, col2 = st.columns([3, 1])
 with col2:
     st.image("assets/tgt_triangle.png", caption="The Temporal Gravity Map", width=225)
-    st.markdown("### TGT Triangle")
-
+ 
 # Title and Introduction
 st.title("Temporal Focus Assessment")
 st.write("""
