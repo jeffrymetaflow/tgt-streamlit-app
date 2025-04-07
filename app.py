@@ -189,3 +189,5 @@ if submit_clicked:
 
         # Optional: download or save
         st.download_button("Download My Results", df_scores.to_csv().encode(), file_name="temporal_focus_results.csv")
+
+     
