@@ -84,8 +84,9 @@ with st.sidebar.expander("📄 Download the Full White Paper"):
 # TGT Triangle Image
 st.markdown("""
 <div style='text-align: right;'>
-    <img src='assets/tgt_triangle.png' alt='TGT Triangle' width='300'>
-    <p style='font-size: 0.9rem; color: gray;'>The Temporal Gravity Map</p>
+    <h3 style='margin-bottom: 0.2rem;'>TGT Triangle</h3>
+    <img src='assets/tgt_triangle.png' alt='TGT Triangle' width='225'>
+    <p style='font-size: 0.85rem; color: gray;'>The Temporal Gravity Map</p>
 </div>
 """, unsafe_allow_html=True)
 
