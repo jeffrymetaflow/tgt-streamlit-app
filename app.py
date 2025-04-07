@@ -37,6 +37,20 @@ questions = {
 st.header("Participant Info")
 user_id = st.text_input("Enter your name or ID")
 
+# View previous history
+if user_id.strip():
+    results_file = "results.csv"
+    if os.path.exists(results_file):
+        all_results = pd.read_csv(results_file)
+        user_history = all_results[all_results['User ID'] == user_id]
+
+        if not user_history.empty:
+            st.subheader("📈 Your Past Assessments")
+            st.dataframe(user_history.sort_values("Timestamp", ascending=False))
+            st.line_chart(user_history.set_index("Timestamp")[['Past Score', 'Present Score', 'Future Score']])
+        else:
+            st.info("No past results found for this ID yet.")
+
 # User input section
 responses = {}
 st.header("Assessment Questions")
