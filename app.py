@@ -29,6 +29,11 @@ TGT helps identify where your mental energy tends to gravitate—your **Temporal
 The 15-question assessment measures your focus and plots it into this temporal model to offer clarity and action steps.
 """)
 
+# Download White Paper
+with st.sidebar.expander("📄 Download the Full White Paper"):
+    with open("Temporal Gravity Theory White Paper.pdf", "rb") as f:
+        st.download_button("Download PDF", f, file_name="Temporal_Gravity_Theory_White_Paper.pdf")
+
 # Title and Introduction
 st.title("Temporal Focus Assessment")
 st.write("""
