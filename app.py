@@ -200,10 +200,7 @@ if os.path.exists(results_file):
                     file_name=f"{user_id if 'user_id' in locals() else 'journal'}_TGT_Journal.csv"
                 )
 
-        .encode(),
-                    file_name=f"{user_id if 'user_id' in locals() else 'journal'}_TGT_Journal.csv"
-                )
-    else:
+else:
         st.info("Not enough team data available yet.")
 else:
     st.info("Team data will appear here once multiple users have taken the assessment.")
