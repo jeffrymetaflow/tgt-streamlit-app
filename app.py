@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from math import pi
 
 # Title and Introduction
 st.title("Temporal Focus Assessment")
@@ -54,6 +55,24 @@ if st.button("Submit & Get Results"):
     st.subheader("Your Temporal Profile")
     df_scores = pd.DataFrame.from_dict(normalized_scores, orient='index', columns=['Score (%)'])
     st.bar_chart(df_scores)
+
+    # Radar chart visualization
+    st.subheader("Radar Chart")
+    categories = list(normalized_scores.keys())
+    values = list(normalized_scores.values())
+    values += values[:1]  # Repeat first value to close the radar chart
+    num_vars = len(categories)
+
+    angles = [n / float(num_vars) * 2 * pi for n in range(num_vars)]
+    angles += angles[:1]
+
+    fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
+    ax.plot(angles, values, linewidth=2, linestyle='solid')
+    ax.fill(angles, values, alpha=0.3)
+    ax.set_xticks(angles[:-1])
+    ax.set_xticklabels(categories)
+    ax.set_yticklabels(["0", "20", "40", "60", "80", "100"])
+    st.pyplot(fig)
 
     # Archetype assignment logic
     dominant_focus = max(normalized_scores, key=normalized_scores.get)
