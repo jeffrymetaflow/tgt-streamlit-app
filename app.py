@@ -85,13 +85,40 @@ if st.button("Submit & Get Results"):
     st.markdown(f"### Dominant Temporal Focus: **{dominant_focus}**")
     st.markdown(f"### Your Archetype: **{archetypes[dominant_focus]}**")
 
-    # Add insight
-    if dominant_focus == "Past":
-        st.write("You tend to reflect on past experiences. Try channeling those memories into wisdom without getting stuck in regret.")
-    elif dominant_focus == "Present":
-        st.write("You thrive in the moment. Consider how staying grounded helps you enjoy life and stay resilient.")
-    elif dominant_focus == "Future":
-        st.write("You’re future-focused. Harness your vision, but don’t forget to enjoy the present journey.")
+    # Add extended insights and tips
+    insights = {
+        "Past": (
+            "You tend to reflect on past experiences. Try channeling those memories into wisdom without getting stuck in regret.",
+            [
+                "Keep a gratitude journal to reframe past events positively.",
+                "Write a letter to your past self, then reflect on how you've grown.",
+                "Practice letting go rituals, like writing and burning old regrets."
+            ]
+        ),
+        "Present": (
+            "You thrive in the moment. Consider how staying grounded helps you enjoy life and stay resilient.",
+            [
+                "Practice mindful breathing for 2 minutes a day.",
+                "Schedule daily 'flow time'—uninterrupted periods to enjoy what you love.",
+                "Notice and name what you're sensing throughout the day."
+            ]
+        ),
+        "Future": (
+            "You’re future-focused. Harness your vision, but don’t forget to enjoy the present journey.",
+            [
+                "Create a vision board and revisit it weekly.",
+                "Break down big goals into small, daily action steps.",
+                "Balance planning with spontaneous activities to stay present."
+            ]
+        )
+    }
+
+    summary, tips = insights[dominant_focus]
+    st.write(summary)
+    st.markdown("#### Try These Tips:")
+    for tip in tips:
+        st.markdown(f"- {tip}")
 
     # Optional: download or save
     st.download_button("Download My Results", df_scores.to_csv().encode(), file_name="temporal_focus_results.csv")
+    
