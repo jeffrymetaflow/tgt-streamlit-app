@@ -7,6 +7,28 @@ from math import pi
 from datetime import datetime
 import os
 
+# Sidebar Overview
+st.sidebar.title("About TGT")
+st.sidebar.markdown("""
+**Temporal Gravity Theory (TGT)** is a framework for understanding how we distribute our attention and emotional energy across time: the past, present, and future.
+
+- **Past Gravity**: Memory, nostalgia, trauma, reflection  
+- **Present Gravity**: Sensory awareness, mindfulness, flow  
+- **Future Gravity**: Ambition, imagination, worry, planning  
+
+TGT helps identify where your mental energy tends to gravitate—your **Temporal Focus Ratio (TFR)**—and offers insights to rebalance.
+
+**Goal:** Achieve *Temporal Integration*, where attention is fluid and balanced across time zones.
+
+### Archetypes:
+- 🕰️ **The Reflector** – Past-dominant
+- 🌿 **The Practitioner** – Present-centered
+- 🚀 **The Visionary** – Future-driven
+- 🔄 **The Integrator** – Balanced and adaptable
+
+The 15-question assessment measures your focus and plots it into this temporal model to offer clarity and action steps.
+""")
+
 # Title and Introduction
 st.title("Temporal Focus Assessment")
 st.write("""
