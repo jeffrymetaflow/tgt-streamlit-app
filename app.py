@@ -143,6 +143,66 @@ if os.path.exists(results_file):
         st.subheader("Archetype Distribution")
         archetype_counts = all_results['Archetype'].value_counts()
         st.bar_chart(archetype_counts)
+
+        # Guided Journal Companion
+        st.subheader("📝 Guided Journal Companion")
+
+        journal_prompts = {
+            "Past": {
+                "prompt": "Reflect on a past experience that still influences you. What wisdom can you extract from it today?",
+                "questions": [
+                    "What emotion is most tied to this memory?",
+                    "What would you tell your past self now?",
+                    "How can this experience serve you moving forward?"
+                ],
+                "action": "Try writing a letter to your younger self and reflecting on what you’ve overcome."
+            },
+            "Present": {
+                "prompt": "Describe a recent moment when you felt fully present. What made it feel that way?",
+                "questions": [
+                    "What did you notice with your senses?",
+                    "How can you recreate that experience more often?",
+                    "What distracts you from staying present most often?"
+                ],
+                "action": "Set a timer for 5 minutes and practice mindful breathing before journaling."
+            },
+            "Future": {
+                "prompt": "What future vision is most exciting to you right now, and what’s one step you can take this week to move toward it?",
+                "questions": [
+                    "What motivates this vision?",
+                    "What fears or doubts do you have about it?",
+                    "How can you stay grounded while working toward it?"
+                ],
+                "action": "Block 15 minutes in your calendar to take one micro-step toward your goal."
+            }
+        }
+
+        if 'dominant_focus' in locals():
+            entry = journal_prompts[dominant_focus]
+            st.markdown(f"**Prompt:** {entry['prompt']}")
+            st.markdown("**Reflection Questions:**")
+            for q in entry["questions"]:
+                st.markdown(f"- {q}")
+
+            st.markdown(f"**Action Tip:** {entry['action']}")
+
+            journal_entry = st.text_area("Your Journal Entry", height=200)
+            if journal_entry:
+                journal_df = pd.DataFrame({
+                    "User ID": [user_id if 'user_id' in locals() else "Anonymous"],
+                    "Timestamp": [datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
+                    "Archetype": [dominant_focus],
+                    "Journal": [journal_entry]
+                })
+                st.download_button(
+                    "📥 Download My Journal Entry",
+                    journal_df.to_csv(index=False).encode(),
+                    file_name=f"{user_id if 'user_id' in locals() else 'journal'}_TGT_Journal.csv"
+                )
+
+        .encode(),
+                    file_name=f"{user_id if 'user_id' in locals() else 'journal'}_TGT_Journal.csv"
+                )
     else:
         st.info("Not enough team data available yet.")
 else:
