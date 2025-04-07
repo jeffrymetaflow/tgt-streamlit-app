@@ -323,7 +323,7 @@ if submit_clicked:
 
         st.markdown(f"**Action Tip:** {entry['action']}")
 
-        journal_entry = st.text_area("Your Journal Entry", height=200)
+       journal_entry = st.text_area("Your Journal Entry", height=200)
         if journal_entry:
             journal_df = pd.DataFrame({
                 "User ID": [user_id if 'user_id' in locals() else "Anonymous"],
@@ -332,8 +332,10 @@ if submit_clicked:
                 "Journal": [journal_entry]
             })
             st.download_button(
-                "📥 Download My Journal Entry",
-                journal_df.to_csv(index=False).encode(),
+                label="📥 Download My Journal Entry",
+                data=journal_df.to_csv(index=False).encode(),
+                file_name=f"{user_id if 'user_id' in locals() else 'journal'}_TGT_Journal.csv"
+            ).encode(),
                 file_name=f"{user_id if 'user_id' in locals() else 'journal'}_TGT_Journal.csv"
             )
 
