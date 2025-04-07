@@ -225,7 +225,7 @@ if submit_clicked:
         st.markdown(f"### Dominant Temporal Focus: **{dominant_focus}**")
         st.markdown(f"### Your Archetype: **{archetypes[dominant_focus]}**")
 
-        # Guided Journal Companion
+   # Guided Journal Companion
 st.subheader("📝 Guided Journal Companion")
 
 journal_prompts = {
@@ -269,15 +269,15 @@ st.markdown(f"**Action Tip:** {entry['action']}")
 journal_entry = st.text_area("Your Journal Entry", height=200)
 if journal_entry:
     journal_df = pd.DataFrame({
-        "User ID": [user_id],
+        "User ID": [user_id if 'user_id' in locals() else "Anonymous"],
         "Timestamp": [datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
-        "Archetype": [archetypes[dominant_focus]],
+        "Archetype": [dominant_focus],
         "Journal": [journal_entry]
     })
     st.download_button(
         "📥 Download My Journal Entry",
         journal_df.to_csv(index=False).encode(),
-        file_name=f"{user_id}_TGT_Journal.csv"
+        file_name=f"{user_id if 'user_id' in locals() else 'journal'}_TGT_Journal.csv"
     )
 
         # Add extended insights and tips
