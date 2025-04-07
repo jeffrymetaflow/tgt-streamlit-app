@@ -201,8 +201,6 @@ if os.path.exists(results_file):
                 )
 
 else:
-        st.info("Not enough team data available yet.")
-else:
     st.info("Team data will appear here once multiple users have taken the assessment.")
 
 # User identity input
@@ -393,6 +391,4 @@ if submit_clicked:
         st.success("Your results have been saved!")
 
         # Optional: download or save
-        st.download_button("Download My Results", df_scores.to_csv()
-
-     
+        st.download_button("Download My Results", df_scores.to_csv().encode(), file_name="temporal_focus_results.csv")
