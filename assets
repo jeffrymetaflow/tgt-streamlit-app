@@ -1,4 +1,0 @@
-git add assets/tgt_triangle.png
-git commit -m "Add TGT triangle visual"
-git push origin main
-
