@@ -31,7 +31,7 @@ The 15-question assessment measures your focus and plots it into this temporal m
 
 # Download White Paper
 with st.sidebar.expander("📄 Download the Full White Paper"):
-    with open("Temporal Gravity Theory White Paper.pdf", "rb") as f:
+    with open("Temporal_Gravity_Theory_White_Paper.pdf", "rb") as f:
         st.download_button("Download PDF", f, file_name="Temporal_Gravity_Theory_White_Paper.pdf")
 
 # Title and Introduction
