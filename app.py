@@ -82,7 +82,12 @@ with st.sidebar.expander("📄 Download the Full White Paper"):
         st.download_button("Download PDF", f, file_name="Temporal_Gravity_Theory_White_Paper.pdf")
 
 # TGT Triangle Image
-st.image("assets/tgt_triangle.png", caption="The Temporal Gravity Map", use_container_width=True)
+st.markdown("""
+<div style='text-align: right;'>
+    <img src='assets/tgt_triangle.png' alt='TGT Triangle' width='300'>
+    <p style='font-size: 0.9rem; color: gray;'>The Temporal Gravity Map</p>
+</div>
+""", unsafe_allow_html=True)
 
 # Title and Introduction
 st.title("Temporal Focus Assessment")
