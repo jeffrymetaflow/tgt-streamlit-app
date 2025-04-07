@@ -60,6 +60,42 @@ questions = {
     "F5": ("The future motivates my actions today.", "Future")
 }
 
+# Group/Team Analytics
+st.header("📊 Team / Group Analytics")
+results_file = "results.csv"
+if os.path.exists(results_file):
+    all_results = pd.read_csv(results_file)
+    if not all_results.empty:
+        st.subheader("Average Temporal Focus (Team)")
+        team_avg = all_results[['Past Score', 'Present Score', 'Future Score']].mean()
+        df_team_avg = pd.DataFrame(team_avg).T
+        st.dataframe(df_team_avg.style.format("{:.2f}"))
+
+        # Radar Chart
+        st.subheader("Team Radar Chart")
+        values = team_avg.tolist()
+        values += values[:1]
+        categories = ['Past', 'Present', 'Future']
+        angles = [n / float(len(categories)) * 2 * pi for n in range(len(categories))]
+        angles += angles[:1]
+
+        fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
+        ax.plot(angles, values, linewidth=2, linestyle='solid')
+        ax.fill(angles, values, alpha=0.3)
+        ax.set_xticks(angles[:-1])
+        ax.set_xticklabels(categories)
+        ax.set_yticklabels(["0", "20", "40", "60", "80", "100"])
+        st.pyplot(fig)
+
+        # Archetype distribution
+        st.subheader("Archetype Distribution")
+        archetype_counts = all_results['Archetype'].value_counts()
+        st.bar_chart(archetype_counts)
+    else:
+        st.info("Not enough team data available yet.")
+else:
+    st.info("Team data will appear here once multiple users have taken the assessment.")
+
 # User identity input
 st.header("Participant Info")
 user_id = st.text_input("Enter your name or ID")
