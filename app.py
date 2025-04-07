@@ -6,6 +6,53 @@ import matplotlib.pyplot as plt
 from math import pi
 from datetime import datetime
 import os
+import base64
+
+# Inject custom CSS
+st.markdown("""
+<style>
+body {
+    background-color: #f9f9fb;
+}
+
+h1, h2, h3, .st-bb {
+    color: #34495e;
+}
+
+section.main > div {
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.stButton > button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+.stButton > button:hover {
+    background-color: #45a049;
+}
+
+.stDownloadButton > button {
+    background-color: #3498db;
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 10px;
+    border: none;
+}
+
+.stDownloadButton > button:hover {
+    background-color: #2980b9;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # Sidebar Overview
 st.sidebar.title("About TGT")
