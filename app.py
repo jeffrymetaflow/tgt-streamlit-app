@@ -4,6 +4,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from math import pi
+from datetime import datetime
+import os
 
 # Title and Introduction
 st.title("Temporal Focus Assessment")
@@ -31,6 +33,10 @@ questions = {
     "F5": ("The future motivates my actions today.", "Future")
 }
 
+# User identity input
+st.header("Participant Info")
+user_id = st.text_input("Enter your name or ID")
+
 # User input section
 responses = {}
 st.header("Assessment Questions")
@@ -40,7 +46,7 @@ for q_id, (question_text, _) in questions.items():
     responses[q_id] = st.slider(question_text, 1, 7, 4)
 
 # Compute results if user has submitted answers
-if st.button("Submit & Get Results"):
+if st.button("Submit & Get Results") and user_id.strip():
     scores = {"Past": 0, "Present": 0, "Future": 0}
     counts = {"Past": 0, "Present": 0, "Future": 0}
 
@@ -119,6 +125,29 @@ if st.button("Submit & Get Results"):
     for tip in tips:
         st.markdown(f"- {tip}")
 
+    # Save results to CSV
+    result_entry = {
+        "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "User ID": user_id,
+        "Past Score": round(normalized_scores["Past"], 2),
+        "Present Score": round(normalized_scores["Present"], 2),
+        "Future Score": round(normalized_scores["Future"], 2),
+        "Archetype": archetypes[dominant_focus]
+    }
+    result_df = pd.DataFrame([result_entry])
+    results_file = "results.csv"
+
+    if os.path.exists(results_file):
+        existing_df = pd.read_csv(results_file)
+        updated_df = pd.concat([existing_df, result_df], ignore_index=True)
+    else:
+        updated_df = result_df
+
+    updated_df.to_csv(results_file, index=False)
+    st.success("Your results have been saved!")
+
     # Optional: download or save
     st.download_button("Download My Results", df_scores.to_csv().encode(), file_name="temporal_focus_results.csv")
-    
+
+elif st.button("Submit & Get Results"):
+    st.warning("Please enter your name or ID before submitting.")
